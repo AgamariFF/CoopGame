@@ -48,12 +48,19 @@ func handle(con net.Conn, logInfo, logErr *log.Logger) {
 func ServerGame(logInfo, logErr *log.Logger) {
 	logInfo.SetPrefix("SERVER_INFO\t")
 	logErr.SetPrefix("SERVER_ERROR\t")
-	stream, err := net.Listen("tcp", ":8080")
-	defer stream.Close()
-	if err != nil {
-		logErr.Fatal(err)
+	host, _ := os.Hostname()
+	addrs, _ := net.LookupIP(host)
+	for _, addr := range addrs {
+		if ipv4 := addr.To16(); ipv4 != nil && ipv4.String()[:3] == "192" {
+			fmt.Println("Your IP: ", ipv4)
+		}
+	}
+	stream, err := net.Listen("tcp", ":3705")
+	if err == nil {
+		defer stream.Close()
+		logInfo.Printf("stream %q has started", stream.Addr().String())
 	} else {
-		logInfo.Println("stream has started")
+		logErr.Fatal(err)
 	}
 	for {
 
@@ -65,10 +72,10 @@ func ServerGame(logInfo, logErr *log.Logger) {
 				if err != nil {
 					logErr.Println(err)
 				}
-				if userMes == "q" {
+				if string(userMes) == "q" {
 					logInfo.Fatalln("Server closed")
 					return
-			
+
 				}
 			}
 		}()
@@ -87,13 +94,18 @@ func ServerGame(logInfo, logErr *log.Logger) {
 func ClientGame(logInfo, logErr *log.Logger) {
 	logInfo.SetPrefix("CLIENT_INFO\t")
 	logErr.SetPrefix("CLIENT_ERROR\t")
-	conn, err := net.Dial("tcp", ":8080")
-	defer conn.Close()
+	fmt.Println("Enter the IP address of the server")
+	var ip string
+	fmt.Scan(&ip)
+	ipv4 := ip + ":3705"
+	logInfo.Printf("The IP address of the server has been received %q. Trying to connect", ipv4)
+	conn, err := net.Dial("tcp", ipv4)
 	defer logInfo.Println("Dial has been ending")
 	if err != nil {
 		logErr.Fatal(err)
 	} else {
-		logInfo.Println("Dial has started")
+		defer conn.Close()
+		logInfo.Printf("Dial has started with %q", ipv4)
 	}
 	reader := bufio.NewReader(os.Stdin)
 	message := make([]byte, 1028)
@@ -101,6 +113,8 @@ func ClientGame(logInfo, logErr *log.Logger) {
 		len, err := reader.Read(message)
 		if err != nil && len > 0 {
 			logErr.Fatalln(err)
+		} else if string(message) == "q" {
+			logInfo.Fatalln("Exit")
 		} else if len > 0 {
 			logInfo.Printf("A new message has been received from os.stdin, content %q", string(message[:len]))
 		}

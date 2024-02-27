@@ -1,5 +1,1 @@
-CLIENT_INFO	2024/02/27 15:08:49 Dial has started
-CLIENT_INFO	2024/02/27 15:08:49 A new message has been received from os.stdin, content "\n"
-CLIENT_INFO	2024/02/27 15:08:49 A new message has been shipped to "127.0.0.1:55802", content "\n"
-CLIENT_INFO	2024/02/27 15:08:55 A new message has been received from os.stdin, content "8gyi\r\n"
-CLIENT_INFO	2024/02/27 15:08:55 A new message has been shipped to "127.0.0.1:55802", content "8gyi\r\n"
+SERVER_INFO	2024/02/28 00:18:04 stream "[::]:3705" has started
