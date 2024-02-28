@@ -1,1 +1,5 @@
-SERVER_INFO	2024/02/28 00:18:04 stream "[::]:3705" has started
+CLIENT_INFO	2024/02/28 11:08:23 The IP address of the server has been received "192.168.1.3:3705". Trying to connect
+CLIENT_INFO	2024/02/28 11:08:23 Dial has started with "192.168.1.3:3705"
+CLIENT_INFO	2024/02/28 11:08:23 A new message has been received from os.stdin, content "\n"
+CLIENT_INFO	2024/02/28 11:08:23 A new message has been shipped to "192.168.0.248:63082", content "\n"
+CLIENT_INFO	2024/02/28 11:08:25 Exit

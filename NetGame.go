@@ -113,7 +113,7 @@ func ClientGame(logInfo, logErr *log.Logger) {
 		len, err := reader.Read(message)
 		if err != nil && len > 0 {
 			logErr.Fatalln(err)
-		} else if string(message) == "q" {
+		} else if string(message[:len]) == "q\r\n" {
 			logInfo.Fatalln("Exit")
 		} else if len > 0 {
 			logInfo.Printf("A new message has been received from os.stdin, content %q", string(message[:len]))
